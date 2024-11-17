@@ -4,12 +4,12 @@ Donate link: https://www.paypal.me/BrainstormForce
 Tags: gutenberg, blocks, gutenberg blocks, editor, block
 Requires at least: 5.6
 Requires PHP: 7.4
-Tested up to: 6.5.2
-Stable tag: 2.12.8
+Tested up to: 6.6
+Stable tag: 2.16.3
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Power-up the Gutenberg editor with advanced and powerful blocks that help you build websites in no time! This first Gutenberg plugin is here to make website building an ultimate journey.
+Power-up Gutenberg with advanced blocks for faster website creation. Build your WordPress website effortlessly using powerful building blocks!
 
 == Description ==
 
@@ -168,7 +168,7 @@ We understand the need for a quality product backed by dedicated support that ca
 
 <strong>WANT TO CONTRIBUTE TO THE PLUGIN? 🙋</strong>
 
-You may now contribute to the plugin on Github: <a href="https://github.com/brainstormforce/ultimate-addons-for-gutenberg" target="_blank" rel="">Spectra on Github</a>
+You may now contribute to the plugin on Github: <a href="https://github.com/brainstormforce/wp-spectra" target="_blank" rel="">Spectra on Github</a>
 
 == Installation ==
 
@@ -211,36 +211,39 @@ When you use the Spectra along with the free Astra theme, you get a huge library
 
 == Credits ==
 
-Our external packages use [Rating Star Component](https://github.com/n49/react-stars) that are distributed under the terms of the ISC. While [Slick](https://github.com/akiran/react-slick), [Lottie](https://github.com/chenqingspring/react-lottie) and [Striptags](https://github.com/ericnorris/striptags) is distributed under the terms of the MIT.
+Our external packages use [Rating Star Component](https://github.com/n49/react-stars) that are distributed under the terms of the ISC. While [Slick](https://github.com/akiran/react-slick), [Lottie](https://github.com/chenqingspring/react-lottie) and [Striptags](https://github.com/ericnorris/striptags) is distributed under the terms of the MIT. Additionally, we incorporate [FontAwesome v6](https://fontawesome.com/license/free) under the CC BY 4.0 License, and [dnd kit](https://github.com/clauderic/dnd-kit) licensed under the MIT License.
 
 == Changelog ==
 
-= 2.12.8 - Wednesday, 10th April 2024 =
-* Improvement: Google Maps - Added a toggle to switch between Roadmap View and Satellite View.
-* Improvement: Global - Improved the block-name identification for the default fallback attributes.
-* Improvement: Global - Added WPML compatibility to the 'How To', 'Buttons', 'Forms' and 'Marketing Button' blocks.
-* Fix: Container - Resolved an issue wherein the link control content and edit icon would overflow out-of-screen after entering lengthy URLs.
-* Fix: Counter - Resolved an issue wherein the total number resets to default on end number change. 
-* Fix: Icon - Resolved an issue wherein a few icons would not load on the frontend.
-* Fix: Global - Resolved an issue that would cause block-styling to break when used for a custom archive template of specific post types in FSE themes.
+= 2.16.3 - Saturday, 2nd November 2024 =
+* This update addressed a security bug. Props to zer0gh0st (D.Sim) for privately reporting it to our team. Please make sure you are using the latest version on your website.
 
-= 2.12.7 - Tuesday, 2nd April 2024 =
-* Security Fix: Hardened the security of the plugin. Props: Wordfence.
-* Improvement: Added compatibility with WordPress v6.5.
-* Improvement: Buttons - Added an inherit-gap-from-theme option.
-* Fix: Container - Resolved an issue wherein the 'open in new window' option would not be available when Spectra Pro is actived.
-* Fix: Icon - Resolved an issue wherein icon links for 'tel' and 'mailto' would not work as intended.
+= 2.16.2 - Wednesday, 23rd October 2024 =
+* Updated the AI Assistant and Design Kit Libraries.
 
-= 2.12.6 - Tuesday, 19th March 2024 =
-* Improvement: Heading - Added an element type option.
-* Improvement: Global - Added a filter `uagb_asset_version` to update the asset version for cache busting purposes.
-* Fix: Google Maps - Resolved an issue in which the responsive height would not be correctly applied in the editor.
-* Fix: Global - Resolved an issue wherein the typography component would not use the values for tablet and mobile when in the customizer widget editor.
-* Fix: Global - Resolved an issue in the editor wherein a double border would appear on hover or focus of blocks used inside any block.
+= 2.16.1 - Friday, 11th October 2024 =
+* Fix: Admin - Resolved an issue wherein notices would be hidden on admin screens other than the popup builder screen.
+* Fix: Design Library - Added a cleanup for any temporary `ast-block-template_data` autoload options that remained in the database.
+
+= 2.16.0 - Wednesday, 9th October 2024 =
+* Improvement: Tabs - Enhanced accessibility in the tabs and improved the content accessibility.
+* Improvement: Global - Added a placeholder for inherited values in all spacing controls.
+* Fix: Container - Resolved an issue wherein the sticky container would not work as expected with the image gallery of the carousel type.
+* Fix: Container - Resolved an issue wherein sticky containers would not work as intended when margins were set for them.
+* Fix: Buttons - Resolved an issue wherein the button sizes would not work as expected in the editor responsive views.
+* Fix: Global - Resolved an issue wherein assets would not load for custom taxonomy templates when using Full Site Editing.
+* Fix: Global - Resolved an issue wherein the CSS would not load for Spectra blocks in custom templates for specific products using Full Site Editing.
+
+= 2.15.3 - Wednesday, 18th September 2024 =
+* Fix: Global - Resolved an issue causing the editor to freeze when the Info box and Separator blocks were used in the sync pattern.
+* Fix: Global - Resolved an issue wherein the Design Library would alter the appearance List and Heading blocks in the editor.
 
 The full changelog is available [here](https://wpspectra.com/whats-new/).
 
 == Upgrade Notice ==
+
+= 2.14.1 =
+With WordPress 6.6 introducing the command palette and taking a place at the top of the editor, we had to retire the 'Move Title to Top' functionality in Spectra. However, there's no need for concern. After updating Spectra, the title in your editor will gracefully return to its default position.
 
 = 2.7.4 =
 With WordPress 6.3 no longer supporting older versions of PHP, the next Spectra release will also require a minimum of PHP 7.4. For websites running on older version of PHP, we strongly recommend upgrading to PHP 7.4 or above to ensure optimal performance and compatibility.

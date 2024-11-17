@@ -54,13 +54,13 @@ $box_shadow_hover_css = UAGB_Block_Helper::generate_shadow_css( $box_shadow_hove
 $t_selectors = array();
 $m_selectors = array();
 
-$selectors['.uagb-icon-wrapper']                             = array(
+$selectors['.uagb-icon-wrapper']                                     = array(
 	'text-align' => $attr['align'],
 );
-$selectors['.uagb-icon-wrapper .uagb-svg-wrapper a']         = array(
+$selectors['.uagb-icon-wrapper .uagb-svg-wrapper a']                 = array(
 	'display' => 'contents',
 );
-$selectors['.uagb-icon-wrapper svg']                         = array(
+$selectors['.uagb-icon-wrapper svg']                                 = array(
 	'width'      => $icon_width,
 	'height'     => $icon_width,
 	'transform'  => "rotate($transformation)",
@@ -68,10 +68,13 @@ $selectors['.uagb-icon-wrapper svg']                         = array(
 	'fill'       => $attr['iconColor'],
 	'filter'     => $drop_shadow ? "drop-shadow( $drop_shadow )" : '',
 );
-$selectors['.uagb-icon-wrapper .uagb-svg-wrapper:hover svg'] = array(
+$selectors['.uagb-icon-wrapper .uagb-svg-wrapper:hover svg']         = array(
 	'fill' => $attr['iconHoverColor'],
 );
-$selectors['.uagb-icon-wrapper .uagb-svg-wrapper']           = array_merge(
+$selectors['.uagb-icon-wrapper .uagb-svg-wrapper:focus-visible svg'] = array(
+	'fill' => $attr['iconHoverColor'],
+);
+$selectors['.uagb-icon-wrapper .uagb-svg-wrapper']                   = array_merge(
 	array(
 		'display'        => 'inline-flex',
 		'background'     => $background,
@@ -80,11 +83,6 @@ $selectors['.uagb-icon-wrapper .uagb-svg-wrapper']           = array_merge(
 		'padding-right'  => UAGB_Helper::get_css_value( $attr['iconRightPadding'], $attr['iconPaddingUnit'] ),
 		'padding-bottom' => UAGB_Helper::get_css_value( $attr['iconBottomPadding'], $attr['iconPaddingUnit'] ),
 		'padding-left'   => UAGB_Helper::get_css_value( $attr['iconLeftPadding'], $attr['iconPaddingUnit'] ),
-		// margin.
-		'margin-top'     => UAGB_Helper::get_css_value( $attr['iconTopMargin'], $attr['iconMarginUnit'] ),
-		'margin-right'   => UAGB_Helper::get_css_value( $attr['iconRightMargin'], $attr['iconMarginUnit'] ),
-		'margin-bottom'  => UAGB_Helper::get_css_value( $attr['iconBottomMargin'], $attr['iconMarginUnit'] ),
-		'margin-left'    => UAGB_Helper::get_css_value( $attr['iconLeftMargin'], $attr['iconMarginUnit'] ),
 		// border.
 		'border-style'   => $attr['iconBorderStyle'],
 		'border-color'   => $attr['iconBorderColor'],
@@ -92,14 +90,34 @@ $selectors['.uagb-icon-wrapper .uagb-svg-wrapper']           = array_merge(
 	),
 	UAGB_Block_Helper::uag_generate_border_css( $attr, 'icon' )
 );
-$selectors['.uagb-icon-wrapper .uagb-svg-wrapper:hover']     = array(
+$selectors['.uagb-icon-wrapper .uagb-svg-wrapper:hover']             = array(
+	'border-color' => $attr['iconBorderHColor'],
+	'background'   => $hover_background,
+);
+$selectors['.uagb-icon-wrapper .uagb-svg-wrapper:focus-visible']     = array(
+	'border-color' => $attr['iconBorderHColor'],
+	'background'   => $hover_background,
+);
+$selectors['.uagb-icon-wrapper.wp-block-uagb-icon--has-margin .uagb-icon-margin-wrapper'] = array(
+	// margin.
+	'margin-top'    => UAGB_Helper::get_css_value( $attr['iconTopMargin'], $attr['iconMarginUnit'] ),
+	'margin-right'  => UAGB_Helper::get_css_value( $attr['iconRightMargin'], $attr['iconMarginUnit'] ),
+	'margin-bottom' => UAGB_Helper::get_css_value( $attr['iconBottomMargin'], $attr['iconMarginUnit'] ),
+	'margin-left'   => UAGB_Helper::get_css_value( $attr['iconLeftMargin'], $attr['iconMarginUnit'] ),
+);
+$selectors['.uagb-icon-wrapper .uagb-svg-wrapper:hover']                                  = array(
 	'border-color' => $attr['iconBorderHColor'],
 	'background'   => $hover_background,
 );
 
 // If using separate box shadow hover settings, then generate CSS for it.
 if ( $attr['useSeparateBoxShadows'] ) {
-	$selectors['.uagb-icon-wrapper .uagb-svg-wrapper:hover'] = array(
+	$selectors['.uagb-icon-wrapper .uagb-svg-wrapper:hover']         = array(
+		'box-shadow'   => $box_shadow_hover_css,
+		'border-color' => $attr['iconBorderHColor'],
+		'background'   => $hover_background,
+	);
+	$selectors['.uagb-icon-wrapper .uagb-svg-wrapper:focus-visible'] = array(
 		'box-shadow'   => $box_shadow_hover_css,
 		'border-color' => $attr['iconBorderHColor'],
 		'background'   => $hover_background,
@@ -123,14 +141,15 @@ $t_selectors['.uagb-icon-wrapper .uagb-svg-wrapper'] = array_merge(
 		'padding-right'  => UAGB_Helper::get_css_value( $attr['iconRightTabletPadding'], $attr['iconTabletPaddingUnit'] ),
 		'padding-bottom' => UAGB_Helper::get_css_value( $attr['iconBottomTabletPadding'], $attr['iconTabletPaddingUnit'] ),
 		'padding-left'   => UAGB_Helper::get_css_value( $attr['iconLeftTabletPadding'], $attr['iconTabletPaddingUnit'] ),
-		'margin-top'     => UAGB_Helper::get_css_value( $attr['iconTopTabletMargin'], $attr['iconTabletMarginUnit'] ),
-		'margin-right'   => UAGB_Helper::get_css_value( $attr['iconRightTabletMargin'], $attr['iconTabletMarginUnit'] ),
-		'margin-bottom'  => UAGB_Helper::get_css_value( $attr['iconBottomTabletMargin'], $attr['iconTabletMarginUnit'] ),
-		'margin-left'    => UAGB_Helper::get_css_value( $attr['iconLeftTabletMargin'], $attr['iconTabletMarginUnit'] ),
 	),
 	UAGB_Block_Helper::uag_generate_border_css( $attr, 'icon', 'tablet' )
 );
-
+$t_selectors['.uagb-icon-wrapper.wp-block-uagb-icon--has-margin .uagb-icon-margin-wrapper'] = array(
+	'margin-top'    => UAGB_Helper::get_css_value( $attr['iconTopTabletMargin'], $attr['iconTabletMarginUnit'] ),
+	'margin-right'  => UAGB_Helper::get_css_value( $attr['iconRightTabletMargin'], $attr['iconTabletMarginUnit'] ),
+	'margin-bottom' => UAGB_Helper::get_css_value( $attr['iconBottomTabletMargin'], $attr['iconTabletMarginUnit'] ),
+	'margin-left'   => UAGB_Helper::get_css_value( $attr['iconLeftTabletMargin'], $attr['iconTabletMarginUnit'] ),
+);
 // Generates css for mobile devices.
 $m_icon_width                                        = UAGB_Helper::get_css_value( $attr['iconSizeMobile'], $attr['iconSizeUnit'] );
 $m_selectors['.uagb-icon-wrapper']                   = array(
@@ -147,14 +166,15 @@ $m_selectors['.uagb-icon-wrapper .uagb-svg-wrapper'] = array_merge(
 		'padding-right'  => UAGB_Helper::get_css_value( $attr['iconRightMobilePadding'], $attr['iconMobilePaddingUnit'] ),
 		'padding-bottom' => UAGB_Helper::get_css_value( $attr['iconBottomMobilePadding'], $attr['iconMobilePaddingUnit'] ),
 		'padding-left'   => UAGB_Helper::get_css_value( $attr['iconLeftMobilePadding'], $attr['iconMobilePaddingUnit'] ),
-		'margin-top'     => UAGB_Helper::get_css_value( $attr['iconTopMobileMargin'], $attr['iconMobileMarginUnit'] ),
-		'margin-right'   => UAGB_Helper::get_css_value( $attr['iconRightMobileMargin'], $attr['iconMobileMarginUnit'] ),
-		'margin-bottom'  => UAGB_Helper::get_css_value( $attr['iconBottomMobileMargin'], $attr['iconMobileMarginUnit'] ),
-		'margin-left'    => UAGB_Helper::get_css_value( $attr['iconLeftMobileMargin'], $attr['iconMobileMarginUnit'] ),
 	),
 	UAGB_Block_Helper::uag_generate_border_css( $attr, 'icon', 'mobile' )
 );
-
+$m_selectors['.uagb-icon-wrapper.wp-block-uagb-icon--has-margin .uagb-icon-margin-wrapper'] = array(
+	'margin-top'    => UAGB_Helper::get_css_value( $attr['iconTopMobileMargin'], $attr['iconMobileMarginUnit'] ),
+	'margin-right'  => UAGB_Helper::get_css_value( $attr['iconRightMobileMargin'], $attr['iconMobileMarginUnit'] ),
+	'margin-bottom' => UAGB_Helper::get_css_value( $attr['iconBottomMobileMargin'], $attr['iconMobileMarginUnit'] ),
+	'margin-left'   => UAGB_Helper::get_css_value( $attr['iconLeftMobileMargin'], $attr['iconMobileMarginUnit'] ),
+);
 $combined_selectors = array(
 	'desktop' => $selectors,
 	'tablet'  => $t_selectors,

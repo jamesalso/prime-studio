@@ -421,6 +421,11 @@ class MerchantStatuses implements Service, ContainerAwareInterface, OptionsAware
 				continue;
 			}
 
+			// Confirm there are issues for this product.
+			if ( empty( $mc_product_status->getItemLevelIssues() ) ) {
+				continue;
+			}
+
 			$product_issue_template = [
 				'product'              => html_entity_decode( $wc_product->get_name() ),
 				'product_id'           => $wc_product_id,
@@ -1035,7 +1040,7 @@ class MerchantStatuses implements Service, ContainerAwareInterface, OptionsAware
 		 */
 		if ( 'home_page_issue' === $issue['code'] ) {
 			$issue['issue']      = 'Website claim is lost, need to re verify and claim your website. Please reference the support link';
-			$issue['action_url'] = 'https://woo.com/document/google-listings-and-ads-faqs/#reverify-website';
+			$issue['action_url'] = 'https://woocommerce.com/document/google-for-woocommerce/faq/#reverify-website';
 		}
 
 		return $issue;

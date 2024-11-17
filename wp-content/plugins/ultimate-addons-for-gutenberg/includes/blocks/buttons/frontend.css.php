@@ -28,58 +28,57 @@ if ( ! $attr['inheritGap'] ) {
 	if ( 'desktop' === $attr['stack'] ) {
 		$selectors[' .uagb-buttons__wrap ']   = array(
 			'flex-direction' => 'column',
-			'row-gap'        => UAGB_Helper::get_css_value( $attr['gap'], 'px' ),
+			'gap'            => UAGB_Helper::get_css_value( $attr['gap'], 'px' ),
 		);
 		$t_selectors[' .uagb-buttons__wrap '] = array(
-			'row-gap' => UAGB_Helper::get_css_value( $attr['gapTablet'], 'px' ),
+			'gap' => UAGB_Helper::get_css_value( $attr['gapTablet'], 'px' ),
 		);
 		$m_selectors[' .uagb-buttons__wrap '] = array(
-			'row-gap' => UAGB_Helper::get_css_value( $attr['gapMobile'], 'px' ),
+			'gap' => UAGB_Helper::get_css_value( $attr['gapMobile'], 'px' ),
 		);
 
 	} elseif ( 'tablet' === $attr['stack'] ) {
 
 		$selectors['.wp-block-uagb-buttons.uagb-buttons__outer-wrap  .uagb-buttons__wrap '] = array(
-			'column-gap' => UAGB_Helper::get_css_value( $attr['gap'], 'px' ),
+			'gap' => UAGB_Helper::get_css_value( $attr['gap'], 'px' ),
 		);
 		$t_selectors[' .uagb-buttons__wrap'] = array(
 			'flex-direction' => 'column',
-			'row-gap'        => UAGB_Helper::get_css_value( $attr['gapTablet'], 'px' ),
+			'gap'            => UAGB_Helper::get_css_value( $attr['gapTablet'], 'px' ),
 		);
 		$m_selectors[' .uagb-buttons__wrap'] = array(
 			'flex-direction' => 'column',
-			'row-gap'        => UAGB_Helper::get_css_value( $attr['gapMobile'], 'px' ),
+			'gap'            => UAGB_Helper::get_css_value( $attr['gapMobile'], 'px' ),
 		);
 
 	} elseif ( 'mobile' === $attr['stack'] ) {
 
 		$selectors['.wp-block-uagb-buttons.uagb-buttons__outer-wrap .uagb-buttons__wrap ']  = array(
 			'flex-direction' => 'row',
-			'column-gap'     => UAGB_Helper::get_css_value( $attr['gap'], 'px' ),
-			'row-gap'        => UAGB_Helper::get_css_value( $attr['gap'], 'px' ),
+			'gap'            => UAGB_Helper::get_css_value( $attr['gap'], 'px' ),
 		);
 		$t_selectors['.wp-block-uagb-buttons.uagb-buttons__outer-wrap .uagb-buttons__wrap'] = array(
-			'column-gap' => UAGB_Helper::get_css_value( $attr['gapTablet'], 'px' ),
-			'row-gap'    => UAGB_Helper::get_css_value( $attr['gapTablet'], 'px' ),
+			'gap' => UAGB_Helper::get_css_value( $attr['gapTablet'], 'px' ),
 		);
 		$m_selectors['.wp-block-uagb-buttons.uagb-buttons__outer-wrap .uagb-buttons__wrap'] = array(
 			'flex-direction' => 'column',
-			'row-gap'        => UAGB_Helper::get_css_value( $attr['gapMobile'], 'px' ),
-			'column-gap'     => UAGB_Helper::get_css_value( $attr['gapMobile'], 'px' ),
+			'gap'            => UAGB_Helper::get_css_value( $attr['gapMobile'], 'px' ),
 		);
 
 	} elseif ( 'none' === $attr['stack'] ) {
 		$selectors['.wp-block-uagb-buttons.uagb-buttons__outer-wrap .uagb-buttons__wrap ']  = array(
-			'column-gap' => UAGB_Helper::get_css_value( $attr['gap'], 'px' ),
+			'gap' => UAGB_Helper::get_css_value( $attr['gap'], 'px' ),
 		);
 		$t_selectors['.wp-block-uagb-buttons.uagb-buttons__outer-wrap .uagb-buttons__wrap'] = array(
-			'column-gap' => UAGB_Helper::get_css_value( $attr['gapTablet'], 'px' ),
+			'gap' => UAGB_Helper::get_css_value( $attr['gapTablet'], 'px' ),
 		);
 		$m_selectors['.wp-block-uagb-buttons.uagb-buttons__outer-wrap .uagb-buttons__wrap'] = array(
-			'column-gap' => UAGB_Helper::get_css_value( $attr['gapMobile'], 'px' ),
+			'gap' => UAGB_Helper::get_css_value( $attr['gapMobile'], 'px' ),
 		);
 	}
-} else {
+}
+
+if ( $attr['inheritGap'] ) {
 	if ( 'desktop' === $attr['stack'] ) {
 		$selectors[' .uagb-buttons__wrap '] = array(
 			'flex-direction' => 'column',
@@ -102,6 +101,10 @@ if ( ! $attr['inheritGap'] ) {
 			'flex-direction' => 'column',
 		);
 	}
+}
+
+if ( $attr['flexWrap'] ) {
+	$selectors[' .uagb-buttons__wrap ']['flex-wrap'] = 'wrap';
 }
 
 $vAlign = '';
@@ -132,9 +135,12 @@ if ( 'full' !== $attr['align'] ) {
 }
 
 if ( 'full' !== $attr['alignTablet'] ) {
-	$t_selectors['.uagb-buttons__outer-wrap .uagb-buttons__wrap '] = array(
+	$t_selectors['.uagb-buttons__outer-wrap .uagb-buttons__wrap ']                 = array(
 		'justify-content' => $attr['alignTablet'],
 		'align-items'     => $vAlign,
+	);
+	$t_selectors['.uagb-buttons__outer-wrap .uagb-buttons__wrap .wp-block-button'] = array(
+		'width' => 'auto',
 	);
 } else {
 	$t_selectors['.uagb-buttons__outer-wrap .uagb-buttons__wrap']                   = array(
@@ -146,9 +152,12 @@ if ( 'full' !== $attr['alignTablet'] ) {
 }
 
 if ( 'full' !== $attr['alignMobile'] ) {
-	$m_selectors['.uagb-buttons__outer-wrap .uagb-buttons__wrap '] = array(
+	$m_selectors['.uagb-buttons__outer-wrap .uagb-buttons__wrap ']                 = array(
 		'justify-content' => $attr['alignMobile'],
 		'align-items'     => $vAlign,
+	);
+	$m_selectors['.uagb-buttons__outer-wrap .uagb-buttons__wrap .wp-block-button'] = array(
+		'width' => 'auto',
 	);
 } else {
 	$m_selectors['.uagb-buttons__outer-wrap .uagb-buttons__wrap']                   = array(
@@ -209,12 +218,13 @@ if ( $attr['childMigrate'] ) {
 	$button_tablet_style  = $button_tablet_padding ? array_merge( $button_tablet_style, $button_tablet_padding ) : $button_tablet_style;
 	$button_mobile_style  = $button_mobile_padding ? array_merge( $button_mobile_style, $button_mobile_padding ) : $button_mobile_style;
 
-	$selectors[' .uagb-buttons-repeater:not(.wp-block-button__link)']   = $button_desktop_style; // For Backword user.
-	$selectors[' .uagb-buttons-repeater.wp-block-button__link']         = $button_desktop_style; // For New User.
-	$t_selectors[' .uagb-buttons-repeater:not(.wp-block-button__link)'] = $button_tablet_style; // For Backword user.
-	$t_selectors[' .uagb-buttons-repeater.wp-block-button__link']       = $button_tablet_style; // For New User.
-	$m_selectors[' .uagb-buttons-repeater:not(.wp-block-button__link)'] = $button_mobile_style; // For Backword user.
-	$m_selectors[' .uagb-buttons-repeater.wp-block-button__link']       = $button_mobile_style; // For New User.
+	$selectors[' .uagb-buttons-repeater:not(.wp-block-button__link)']                 = $button_desktop_style; // For Backword user.
+	$selectors[' .uagb-button__wrapper .uagb-buttons-repeater.wp-block-button__link'] = $button_desktop_style; // For New User.
+	$selectors[' .uagb-button__wrapper .uagb-buttons-repeater.ast-outline-button']    = $button_desktop_style; // For Secondary color from Astra Customizer.
+	$t_selectors[' .uagb-buttons-repeater:not(.wp-block-button__link)']               = $button_tablet_style; // For Backword user.
+	$t_selectors[' .uagb-buttons-repeater.wp-block-button__link']                     = $button_tablet_style; // For New User.
+	$m_selectors[' .uagb-buttons-repeater:not(.wp-block-button__link)']               = $button_mobile_style; // For Backword user.
+	$m_selectors[' .uagb-buttons-repeater.wp-block-button__link']                     = $button_mobile_style; // For New User.
 
 	$selectors[' .uagb-button__wrapper'] = array(
 		'margin-top'    => UAGB_Helper::get_css_value( $attr['topMargin'], $attr['marginType'] ),

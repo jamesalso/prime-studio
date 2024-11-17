@@ -3,7 +3,7 @@
  * Frontend CSS & Google Fonts loading File.
  *
  * @since 2.0.0
- *
+ * @var mixed[] $attr
  * @package uagb
  */
 
@@ -93,6 +93,8 @@ $box_shadow_hover_properties = array(
 $box_shadow_css       = UAGB_Block_Helper::generate_shadow_css( $box_shadow_properties );
 $box_shadow_hover_css = UAGB_Block_Helper::generate_shadow_css( $box_shadow_hover_properties );
 
+$attr['captionDecoration'] = '' === $attr['captionDecoration'] && defined( 'ASTRA_THEME_SETTINGS' ) && function_exists( 'astra_get_font_extras' ) && function_exists( 'astra_get_option' ) ? astra_get_font_extras( astra_get_option( 'body-font-extras' ), 'text-decoration' ) : $attr['captionDecoration'];
+
 $selectors = array(
 	'.wp-block-uagb-image'                            => array(
 		'margin-top'      => UAGB_Helper::get_css_value( $attr['imageTopMargin'], $attr['imageMarginUnit'] ),
@@ -121,7 +123,7 @@ $selectors = array(
 		'margin-right'  => UAGB_Helper::get_css_value( $attr['captionRightMargin'], $attr['captionMarginUnit'] ),
 		'margin-bottom' => UAGB_Helper::get_css_value( $attr['captionBottomMargin'], $attr['captionMarginUnit'] ),
 		'margin-left'   => UAGB_Helper::get_css_value( $attr['captionLeftMargin'], $attr['captionMarginUnit'] ),
-		'align-self'    => $attr['captionAlign'],
+		'align-self'    => ( 'overlay' !== $attr['layout'] ? $attr['captionAlign'] : '' ),
 	),
 	'.wp-block-uagb-image .wp-block-uagb-image__figure figcaption a' => array(
 		'color' => $attr['captionColor'],
@@ -213,11 +215,11 @@ if ( 'hover' === $attr['seperatorShowOn'] ) {
 
 // If using separate box shadow hover settings, then generate CSS for it.
 if ( $attr['useSeparateBoxShadows'] ) {
-	$selectors['.wp-block-uagb-image--layout-default figure img:hover'] = array(
+	$selectors['.wp-block-uagb-image--layout-default figure:hover img'] = array(
 		'box-shadow' => $box_shadow_hover_css,
 	);
 
-	$selectors['.wp-block-uagb-image--layout-overlay figure img:hover'] = array(
+	$selectors['.wp-block-uagb-image--layout-overlay figure:hover img'] = array(
 		'box-shadow' => $box_shadow_hover_css,
 	);
 
@@ -255,7 +257,7 @@ $t_selectors['.wp-block-uagb-image']                                  = array(
 	'margin-left'     => UAGB_Helper::get_css_value( $attr['imageLeftMarginTablet'], $attr['imageMarginUnitTablet'] ),
 	'text-align'      => $attr['alignTablet'],
 	'justify-content' => $alignTablet,
-	'align-self'      => $alignTablet,   
+	'align-self'      => $alignTablet,
 );
 $t_selectors[' .wp-block-uagb-image__figure']                         = array(
 	'align-items' => $alignTablet,
@@ -303,7 +305,7 @@ $m_selectors['.wp-block-uagb-image']                                  = array(
 	'margin-left'     => UAGB_Helper::get_css_value( $attr['imageLeftMarginMobile'], $attr['imageMarginUnitMobile'] ),
 	'text-align'      => $attr['alignMobile'],
 	'justify-content' => $alignMobile,
-	'align-self'      => $alignMobile,   
+	'align-self'      => $alignMobile,
 );
 $m_selectors[' .wp-block-uagb-image__figure']                         = array(
 	'align-items' => $alignMobile,

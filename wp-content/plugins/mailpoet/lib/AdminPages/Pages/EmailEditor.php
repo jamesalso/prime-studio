@@ -92,9 +92,10 @@ class EmailEditor {
         'is_premium_plugin_active' => (bool)$this->servicesChecker->isPremiumPluginActive(),
         'current_wp_user_email' => esc_js($currentUserEmail),
         'editor_settings' => $this->settingsController->getSettings(),
-        'editor_layout' => $this->settingsController->getLayout(),
         'editor_theme' => $this->themeController->getTheme()->get_raw_data(),
-        'bc_state' => $this->getBackwardCompatibilityState(),
+        'urls' => [
+          'listings' => admin_url('admin.php?page=mailpoet-newsletters'),
+        ],
       ]
     );
 
@@ -133,18 +134,6 @@ class EmailEditor {
     // Enqueue media library scripts
     $this->wp->wpEnqueueMedia();
 
-    echo '<div id="mailpoet-email-editor" class="block-editor"></div>';
-  }
-
-  /**
-   * Workaround for backward compatibility with WordPress and Gutenberg versions
-   * Hopefully we could get rid of this after we drop support for WP 6.4
-   */
-  private function getBackwardCompatibilityState(): array {
-    global $wp_version;
-    $gutenbergVersion = defined('GUTENBERG_VERSION') ? GUTENBERG_VERSION : '0.0.0';
-    return [
-      'isInlinedBlockToolbarAvailable' => version_compare($wp_version, '6.5', '>=') || version_compare($gutenbergVersion, '17.3', '>='),
-    ];
+    echo '<div id="mailpoet-email-editor" class="block-editor block-editor__container hide-if-no-js"></div>';
   }
 }

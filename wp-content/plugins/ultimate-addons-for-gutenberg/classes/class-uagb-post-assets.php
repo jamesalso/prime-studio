@@ -281,7 +281,14 @@ class UAGB_Post_Assets {
 
 				// Check if the current page is a product page.
 				case is_product():
-					return 'single-product';
+					// Retrieve the queried object.
+					$object = get_queried_object();
+					// Get all block templates.
+					$template_types = get_block_templates();
+					// Extract the 'slug' column from the block templates array.
+					$template_type_slug = array_column( $template_types, 'slug' );
+					// Check specific single product template exist or not. If not then use default single product template. 
+					return ( $object instanceof WP_Post && in_array( 'single-product-' . $object->post_name, $template_type_slug ) ) ? 'single-product-' . $object->post_name : 'single-product';
 
 				// Check if the current page is an archive page.
 				case is_archive():
@@ -308,7 +315,7 @@ class UAGB_Post_Assets {
 							}
 							// Return the appropriate template based on the search condition.
 							return $searchCondition ? 'product-search-results' : 'archive-product';
-						
+
 						// Case when the current page is a product taxonomy and the object is a term.
 						case is_product_taxonomy() && $object instanceof WP_Term:
 							// Check if the taxonomy is a product attribute.
@@ -331,12 +338,12 @@ class UAGB_Post_Assets {
 								return $searchCondition ? 'product-search-results' : 'archive-product';
 							}
 							break;
-						
+
 						// Case when the current page is the shop page.
 						case is_shop():
 							// Return the appropriate template based on the search condition.
 							return $searchCondition ? 'product-search-results' : 'archive-product';
-						
+
 						default:
 							// Return the appropriate template based on the search condition and the type of the queried object.
 							return $searchCondition ? 'product-search-results' : ( ( $object instanceof WP_Post || $object instanceof WP_Post_Type || $object instanceof WP_Term || $object instanceof WP_User ) ? $this->get_archive_page_template( $object, $template_type_slug ) : 'archive-product' );
@@ -370,6 +377,14 @@ class UAGB_Post_Assets {
 			} elseif ( is_tag() ) { // For tag archive or more specific tag template.
 				$tag_slug = 'tag-' . $archive_object->slug;
 				return in_array( $tag_slug, $template_type_slug ) ? $tag_slug : ( in_array( 'tag', $template_type_slug ) ? 'tag' : 'archive' );
+			} elseif ( is_tax() ) {
+				$tax_slug          = 'taxonomy-' . $archive_object->taxonomy;
+				$specific_tax_slug = 'taxonomy-' . $archive_object->taxonomy . '-' . $archive_object->slug;
+				if ( in_array( $specific_tax_slug, $template_type_slug ) ) { // For more specific custom taxonomy template.
+					$this->prepare_assets_for_templates_based_post_type( $specific_tax_slug );
+				}
+				// For all custom taxonomy archive or more archive taxonomy template.
+				return in_array( $tax_slug, $template_type_slug ) ? $tax_slug : 'archive';
 			}
 		} elseif ( is_date() && in_array( 'date', $template_type_slug ) ) { // For date archive template.
 			return 'date';
@@ -686,7 +701,7 @@ class UAGB_Post_Assets {
 		$this->current_block_list  = $page_assets['current_block_list'];
 		$this->uag_flag            = $page_assets['uag_flag'];
 		$this->stylesheet          = apply_filters( 'uag_page_assets_css', $page_assets['css'] );
-		$this->script              = $page_assets['js'];
+		$this->script              = apply_filters( 'uag_page_assets_js', $page_assets['js'] );
 		$this->gfonts              = $page_assets['gfonts'];
 		$this->gfonts_files        = $page_assets['gfonts_files'];
 		$this->gfonts_url          = $page_assets['gfonts_url'];
@@ -702,15 +717,19 @@ class UAGB_Post_Assets {
 	 * @since 1.23.0
 	 */
 	public function enqueue_scripts() {
-			$blocks = array();
+		if ( UAGB_Admin_Helper::should_exclude_assets_for_cpt() ) {
+			return; // Early return to prevent loading assets.
+		}
+		
+		$blocks = array();
 		if ( UAGB_Admin_Helper::is_block_theme() ) {
 			global $_wp_current_template_content;
 			if ( isset( $_wp_current_template_content ) ) {
 				$blocks = parse_blocks( $_wp_current_template_content );
 			}
 		}
-			// Global Required assets.
-			// If the current template has content and contains blocks, execute this code block.
+		// Global Required assets.
+		// If the current template has content and contains blocks, execute this code block.
 		if ( has_blocks( $this->post_id ) || has_blocks( $blocks ) ) {
 			/* Print conditional css for all blocks */
 			add_action( 'wp_head', array( $this, 'print_conditional_css' ), 80 );
@@ -804,8 +823,8 @@ class UAGB_Post_Assets {
 	}
 	/**
 	 * This is the action where we create dynamic asset files.
-	 * CSS Path : uploads/uag-plugin/uag-style-{post_id}-{timestamp}.css
-	 * JS Path : uploads/uag-plugin/uag-script-{post_id}-{timestamp}.js
+	 * CSS Path : uploads/uag-plugin/uag-style-{post_id}.css
+	 * JS Path : uploads/uag-plugin/uag-script-{post_id}.js
 	 *
 	 * @since 1.15.0
 	 */
@@ -897,14 +916,6 @@ class UAGB_Post_Assets {
 			)
 		);
 
-		wp_localize_script(
-			'uagb-countdown-js',
-			'uagb_countdown_data',
-			array(
-				'site_name_slug' => sanitize_title( get_bloginfo( 'name' ) ),
-			)
-		);
-
 		do_action( 'spectra_localize_pro_block_ajax' );
 
 	}
@@ -921,8 +932,8 @@ class UAGB_Post_Assets {
 		*/
 		$uagb_asset_ver = apply_filters( 'uagb_asset_version', UAGB_ASSET_VER );
 
-		if ( empty( $uagb_asset_ver ) || ! is_string( $uagb_asset_ver ) ) { 
-			$uagb_asset_ver = UAGB_ASSET_VER; 
+		if ( empty( $uagb_asset_ver ) || ! is_string( $uagb_asset_ver ) ) {
+			$uagb_asset_ver = UAGB_ASSET_VER;
 		}
 
 		if ( isset( $file_handler['css_url'] ) ) {

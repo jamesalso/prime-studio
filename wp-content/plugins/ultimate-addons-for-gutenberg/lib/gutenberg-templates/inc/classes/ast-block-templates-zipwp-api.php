@@ -74,7 +74,7 @@ class Ast_Block_Templates_Zipwp_Api {
 		if ( ! current_user_can( 'manage_ast_block_templates' ) ) {
 			return new \WP_Error(
 				'gt_rest_cannot_access',
-				__( 'Sorry, you are not allowed to do that.', 'astra-sites' ),
+				__( 'Sorry, you are not allowed to do that.', 'ultimate-addons-for-gutenberg' ),
 				array( 'status' => rest_authorization_required_code() )
 			);
 		}
@@ -135,7 +135,7 @@ class Ast_Block_Templates_Zipwp_Api {
 		if ( ! wp_verify_nonce( sanitize_text_field( $nonce ), 'wp_rest' ) ) {
 			wp_send_json_error(
 				array(
-					'data' => __( 'Nonce verification failed.', 'astra-sites' ),
+					'data' => __( 'Nonce verification failed.', 'ultimate-addons-for-gutenberg' ),
 					'status'  => false,
 
 				)
@@ -149,7 +149,7 @@ class Ast_Block_Templates_Zipwp_Api {
 			'headers' => $this->get_api_headers(),
 			'timeout' => 100,
 		);
-		$response = wp_remote_get( $api_endpoint, $request_args );
+		$response = wp_safe_remote_get( $api_endpoint, $request_args );
 		if ( is_wp_error( $response ) ) {
 			// There was an error in the request.
 			wp_send_json_error(
@@ -194,19 +194,19 @@ class Ast_Block_Templates_Zipwp_Api {
 		if ( ! wp_verify_nonce( sanitize_text_field( $nonce ), 'wp_rest' ) ) {
 			wp_send_json_error(
 				array(
-					'data' => __( 'Nonce verification failed.', 'astra-sites' ),
+					'data' => __( 'Nonce verification failed.', 'ultimate-addons-for-gutenberg' ),
 					'status'  => false,
 
 				)
 			);
 		}
 
-		$api_endpoint = $this->get_api_domain() . '/sites/languages/';
+		$api_endpoint = $this->get_api_domain() . 'sites/languages/';
 		$request_args = array(
 			'headers' => $this->get_api_headers(),
 			'timeout' => 100,
 		);
-		$response = wp_remote_get( $api_endpoint, $request_args );
+		$response = wp_safe_remote_get( $api_endpoint, $request_args );
 
 		if ( is_wp_error( $response ) ) {
 			// There was an error in the request.
